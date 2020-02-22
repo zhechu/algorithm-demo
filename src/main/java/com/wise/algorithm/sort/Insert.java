@@ -18,7 +18,8 @@ public class Insert {
 
     public static int[] insertionSort(int[] array){
         int len = array.length;
-        for (int i = 1; i < len; i++) { // 从第2个元素开始
+        // 假设第1个元素已排好序，从第2个元素开始
+        for (int i = 1; i < len; i++) {
             for (int j = i; j > 0; j--) {
                 if (array[j] < array[j - 1]) {
                     array[j - 1] = array[j - 1] ^ array[j];
