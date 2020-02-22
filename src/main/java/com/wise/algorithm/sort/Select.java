@@ -20,13 +20,15 @@ public class Select {
         int minIndex = 0;
         int len = array.length;
         for (int i = 0; i < len - 1; i++) {
-            minIndex = i; // 无序区的最小数据数组下标
+            // 无序区的最小数据数组下标
+            minIndex = i;
             for (int j = i + 1; j < len; j++) {
                 // 在无序区中找到最小数据并保存其数组下标
                 if (array[j] < array[minIndex]) minIndex = j;
             }
+
+            // 若最小数不在正确位置，则交换
             if (minIndex != i) {
-                // 如果不是无序区的最小值位置不是默认的第一个数据，则交换之。
                 array[i] = array[i] ^ array[minIndex];
                 array[minIndex] = array[i] ^ array[minIndex];
                 array[i] = array[i] ^ array[minIndex];
