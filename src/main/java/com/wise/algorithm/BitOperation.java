@@ -15,7 +15,7 @@ public class BitOperation {
     }
 
     /**
-     * 求和再除以2
+     * 求和再除以2：先加后移
      * @param a
      * @param b
      */
