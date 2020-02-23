@@ -83,17 +83,13 @@ public class Quick {
         int p = left;
         for (int j = left; j < right; j++) {
             if (arr[j] < arr[right]) {
-                if (p != j) {
-                    swap(arr, p, j);
-                }
+                swap(arr, p, j);
                 p++;
             }
         }
 
         // 此时，p 要么是与 right 相等（原数组已有序），要么是右边第一个比 right 元素值大的数的指针
-        if (p != right) {
-            swap(arr, p, right);
-        }
+        swap(arr, p, right);
         return p;
     }
 
@@ -104,6 +100,10 @@ public class Quick {
      * @param j
      */
     public static void swap(int[] arr, int i, int j) {
+        if (i == j) {
+            return;
+        }
+
         arr[i] = arr[i] ^ arr[j];
         arr[j] = arr[i] ^ arr[j];
         arr[i] = arr[i] ^ arr[j];

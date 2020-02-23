@@ -3,14 +3,14 @@ package com.wise.algorithm.sort;
 import java.util.Arrays;
 
 /**
- * 堆排序
+ * 堆排序（大根堆）
  * @author lingyuwang
  * @date 2019-07-13 11:01
  */
 public class Heap {
 
     public static void main(String[] args) {
-        // 堆排序
+        // 对数器
         int testTime = 1;
         int maxSize = 100;
         int maxValue = 100;
@@ -19,7 +19,8 @@ public class Heap {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
             int[] arr2 = copyArray(arr1);
             heapSort(arr1);
-            comparator(arr2);
+            Arrays.sort(arr2);
+            // 检查经冒泡排序的数组是否已有序，若有序，则检查成功
             if (!isEqual(arr1, arr2)) {
                 succeed = false;
                 break;
@@ -27,12 +28,22 @@ public class Heap {
         }
         System.out.println(succeed ? "检查成功" : "检查失败");
 
+        // 堆排序
         int[] arr = generateRandomArray(maxSize, maxValue);
+        // 排序前
         printArray(arr);
+
+        // 开始排序
         heapSort(arr);
+
+        // 排序后
         printArray(arr);
     }
 
+    /**
+     * 大根堆排序
+     * @param arr
+     */
     public static void heapSort(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
@@ -53,6 +64,11 @@ public class Heap {
         }
     }
 
+    /**
+     * 堆插入元素
+     * @param arr
+     * @param index
+     */
     public static void heapInsert(int[] arr, int index) {
         while (arr[index] > arr[(index - 1) / 2]) {
             swap(arr, index, (index - 1) / 2);
@@ -60,6 +76,12 @@ public class Heap {
         }
     }
 
+    /**
+     * 堆调整
+     * @param arr
+     * @param index
+     * @param size
+     */
     public static void heapify(int[] arr, int index, int size) {
         int left = index * 2 + 1;
         while (left < size) {
@@ -74,18 +96,28 @@ public class Heap {
         }
     }
 
+    /**
+     * 两数交换
+     * @param arr
+     * @param i
+     * @param j
+     */
     public static void swap(int[] arr, int i, int j) {
-        int tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
+        if (i == j) {
+            return;
+        }
+
+        arr[i] = arr[i] ^ arr[j];
+        arr[j] = arr[i] ^ arr[j];
+        arr[i] = arr[i] ^ arr[j];
     }
 
-    // for test
-    public static void comparator(int[] arr) {
-        Arrays.sort(arr);
-    }
-
-    // for test
+    /**
+     * 随机生成数组
+     * @param maxSize
+     * @param maxValue
+     * @return
+     */
     public static int[] generateRandomArray(int maxSize, int maxValue) {
         int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
         for (int i = 0; i < arr.length; i++) {
@@ -94,7 +126,11 @@ public class Heap {
         return arr;
     }
 
-    // for test
+    /**
+     * 拷贝数组
+     * @param arr
+     * @return
+     */
     public static int[] copyArray(int[] arr) {
         if (arr == null) {
             return null;
@@ -106,7 +142,12 @@ public class Heap {
         return res;
     }
 
-    // for test
+    /**
+     * 两数组比较
+     * @param arr1
+     * @param arr2
+     * @return
+     */
     public static boolean isEqual(int[] arr1, int[] arr2) {
         if ((arr1 == null && arr2 != null) || (arr1 != null && arr2 == null)) {
             return false;
@@ -125,7 +166,10 @@ public class Heap {
         return true;
     }
 
-    // for test
+    /**
+     * 数组打印
+     * @param arr
+     */
     public static void printArray(int[] arr) {
         if (arr == null) {
             return;
