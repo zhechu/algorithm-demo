@@ -3,14 +3,14 @@ package com.wise.algorithm.sort;
 import java.util.Arrays;
 
 /**
- * 随机快速排序递归实现
+ * 快速排序
  * @author lingyuwang
  * @date 2019-07-13 10:55
  */
-public class FastRecur {
+public class Quick {
 
     public static void main(String[] args) {
-        // 快速排序
+        // 对数器
         int testTime = 1;
         int maxSize = 100;
         int maxValue = 100;
@@ -19,7 +19,8 @@ public class FastRecur {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
             int[] arr2 = copyArray(arr1);
             quickSort(arr1);
-            comparator(arr2);
+            Arrays.sort(arr2);
+            // 检查经冒泡排序的数组是否已有序，若有序，则检查成功
             if (!isEqual(arr1, arr2)) {
                 succeed = false;
                 printArray(arr1);
@@ -29,13 +30,24 @@ public class FastRecur {
         }
         System.out.println(succeed ? "检查成功" : "检查失败");
 
+        // 快速排序
         int[] arr = generateRandomArray(maxSize, maxValue);
+
+        // 排序前
         printArray(arr);
+
+        // 开始排序
         quickSort(arr);
+
+        // 排序后
         printArray(arr);
 
     }
 
+    /**
+     * 快速排序主入口
+     * @param arr
+     */
     public static void quickSort(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
@@ -43,44 +55,66 @@ public class FastRecur {
         quickSort(arr, 0, arr.length - 1);
     }
 
-    public static void quickSort(int[] arr, int l, int r) {
-        if (l < r) {
-            swap(arr, l + (int) (Math.random() * (r - l + 1)), r); // 增加随机性
-            int[] p = partition(arr, l, r);
-            quickSort(arr, l, p[0] - 1);
-            quickSort(arr, p[1] + 1, r);
+    /**
+     * 快速排序算法骨架方法，用于递归
+     * @param arr
+     * @param left
+     * @param right
+     */
+    public static void quickSort(int[] arr, int left, int right) {
+        if (left >= right){
+            return;
         }
+
+        int p = partition(arr, left, right);
+        quickSort(arr, left, p-1);
+        quickSort(arr, p + 1, right);
     }
 
-    public static int[] partition(int[] arr, int l, int r) {
-        int less = l - 1;
-        int more = r;
-        int current = l; // current 可以用 l 变量替换，这里为了方便理解才加多的一个变量
-        while (current < more) {
-            if (arr[current] < arr[r]) {
-                swap(arr, ++less, current++);
-            } else if (arr[current] > arr[r]) {
-                swap(arr, --more, current);
-            } else {
-                current++;
+    /**
+     * 以最后一个元素作为分区点进行分区
+     * @param arr
+     * @param left
+     * @param right
+     * @return
+     */
+    public static int partition(int[] arr, int left, int right) {
+        // 记录分区指针所在的位置
+        int p = left;
+        for (int j = left; j < right; j++) {
+            if (arr[j] < arr[right]) {
+                if (p != j) {
+                    swap(arr, p, j);
+                }
+                p++;
             }
         }
-        swap(arr, current, r);
-        return new int[] { less + 1, more };
+
+        // 此时，p 要么是与 right 相等（原数组已有序），要么是右边第一个比 right 元素值大的数的指针
+        if (p != right) {
+            swap(arr, p, right);
+        }
+        return p;
     }
 
+    /**
+     * 两数交换
+     * @param arr
+     * @param i
+     * @param j
+     */
     public static void swap(int[] arr, int i, int j) {
-        int tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
+        arr[i] = arr[i] ^ arr[j];
+        arr[j] = arr[i] ^ arr[j];
+        arr[i] = arr[i] ^ arr[j];
     }
 
-    // for test
-    public static void comparator(int[] arr) {
-        Arrays.sort(arr);
-    }
-
-    // for test
+    /**
+     * 随机生成数组
+     * @param maxSize
+     * @param maxValue
+     * @return
+     */
     public static int[] generateRandomArray(int maxSize, int maxValue) {
         int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
         for (int i = 0; i < arr.length; i++) {
@@ -89,7 +123,11 @@ public class FastRecur {
         return arr;
     }
 
-    // for test
+    /**
+     * 拷贝数组
+     * @param arr
+     * @return
+     */
     public static int[] copyArray(int[] arr) {
         if (arr == null) {
             return null;
@@ -101,7 +139,12 @@ public class FastRecur {
         return res;
     }
 
-    // for test
+    /**
+     * 两数组比较
+     * @param arr1
+     * @param arr2
+     * @return
+     */
     public static boolean isEqual(int[] arr1, int[] arr2) {
         if ((arr1 == null && arr2 != null) || (arr1 != null && arr2 == null)) {
             return false;
@@ -120,7 +163,10 @@ public class FastRecur {
         return true;
     }
 
-    // for test
+    /**
+     * 数组打印
+     * @param arr
+     */
     public static void printArray(int[] arr) {
         if (arr == null) {
             return;
