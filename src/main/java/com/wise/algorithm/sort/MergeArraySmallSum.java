@@ -5,7 +5,7 @@ package com.wise.algorithm.sort;
  * @author lingyuwang
  * @date 2019-07-13 10:51
  */
-public class MergePracticeDemo {
+public class MergeArraySmallSum {
 
     public static void main(String[] args) {
         // 对数器
@@ -41,49 +41,84 @@ public class MergePracticeDemo {
     /**
      * 归并排序
      * @param arr
-     * @param l
-     * @param r
+     * @param left
+     * @param right
      * @return
      */
-    public static int mergeSort(int[] arr, int l, int r) {
-        if (l == r) {
+    public static int mergeSort(int[] arr, int left, int right) {
+        // 序列中只有一个元素，表示默认已排好序，不需处理，直接返回
+        if (left == right) {
             return 0;
         }
-        int mid = l + ((r - l) >> 1);
-        return mergeSort(arr, l, mid) + mergeSort(arr, mid + 1, r) + merge(arr, l, mid, r);
+
+        // 结果
+        int res = 0;
+
+        // 使用加减法和位运算以避免乘除法运算，提高效率
+        int mid = left + ((right - left) >> 1);
+        // 左边序列排序
+        res += mergeSort(arr, left, mid);
+        // 右边序列排序
+        res += mergeSort(arr, mid + 1, right);
+        // 两序列归并
+        res += merge(arr, left, mid, right);
+
+        return res;
     }
 
     /**
      * 归并
      * @param arr
-     * @param l
-     * @param m
-     * @param r
+     * @param left
+     * @param mid
+     * @param right
      * @return
      */
-    public static int merge(int[] arr, int l, int m, int r) {
-        int[] help = new int[r - l + 1];
+    public static int merge(int[] arr, int left, int mid, int right) {
+        // 两序列合并后的辅助数组
+        int[] help = new int[right - left + 1];
         int i = 0;
-        int p1 = l;
-        int p2 = m + 1;
+        // 左序列当前指针
+        int p1 = left;
+        // 右序列当前指针
+        int p2 = mid + 1;
+        // 记录结果
         int res = 0;
-        while (p1 <= m && p2 <= r) {
-            res += arr[p1] < arr[p2] ? (r - p2 + 1) * arr[p1] : 0;
-            help[i++] = arr[p1] < arr[p2] ? arr[p1++] : arr[p2++];
+
+        while (p1 <= mid && p2 <= right) {
+            // 若左边序列当前指针的值比右序列当前指针的值小，则前者进入辅助数组，反之则反
+            if (arr[p1] < arr[p2]) {
+                // 右边序列所有元素都比 p1 指针的元素大，所以都需+1（用乘法实现）
+                res += (right - p2 + 1) * arr[p1];
+                help[i++] = arr[p1++];
+            } else {
+                help[i++] = arr[p2++];
+            }
         }
-        while (p1 <= m) {
+
+        // 检查左边序列是否还有元素未进入辅助数组
+        while (p1 <= mid) {
             help[i++] = arr[p1++];
         }
-        while (p2 <= r) {
+
+        // 检查右边序列是否还有元素未进入辅助数组
+        while (p2 <= right) {
             help[i++] = arr[p2++];
         }
+
+        // 将辅助数组整理到原数组
         for (i = 0; i < help.length; i++) {
-            arr[l + i] = help[i];
+            arr[left + i] = help[i];
         }
+
         return res;
     }
 
-    // for test
+    /**
+     * 对数器
+     * @param arr
+     * @return
+     */
     public static int comparator(int[] arr) {
         if (arr == null || arr.length < 2) {
             return 0;
@@ -97,7 +132,12 @@ public class MergePracticeDemo {
         return res;
     }
 
-    // for test
+    /**
+     * 随机生成数组
+     * @param maxSize
+     * @param maxValue
+     * @return
+     */
     public static int[] generateRandomArray(int maxSize, int maxValue) {
         int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
         for (int i = 0; i < arr.length; i++) {
@@ -106,7 +146,11 @@ public class MergePracticeDemo {
         return arr;
     }
 
-    // for test
+    /**
+     * 拷贝数组
+     * @param arr
+     * @return
+     */
     public static int[] copyArray(int[] arr) {
         if (arr == null) {
             return null;
@@ -118,7 +162,12 @@ public class MergePracticeDemo {
         return res;
     }
 
-    // for test
+    /**
+     * 两数组比较
+     * @param arr1
+     * @param arr2
+     * @return
+     */
     public static boolean isEqual(int[] arr1, int[] arr2) {
         if ((arr1 == null && arr2 != null) || (arr1 != null && arr2 == null)) {
             return false;
@@ -137,7 +186,10 @@ public class MergePracticeDemo {
         return true;
     }
 
-    // for test
+    /**
+     * 数组打印
+     * @param arr
+     */
     public static void printArray(int[] arr) {
         if (arr == null) {
             return;

@@ -38,17 +38,19 @@ public class QuickHollandFlag {
         // 当前指针
         int current = left;
         while (current < pRight) {
-            // num 应进入左分区（小于num）
+            // current 应进入左分区（小于num）
             if (arr[current] < num) {
                 pLeft++;
                 swap(arr, pLeft, current);
                 current++;
             }
-            // num 应进入右分区（大于num）
+            // current 应进入右分区（大于num）
             else if (arr[current] > num) {
                 pRight--;
                 swap(arr, pRight, current);
-            } else {
+            }
+            // current 应进入中间分区
+            else {
                 current++;
             }
         }
