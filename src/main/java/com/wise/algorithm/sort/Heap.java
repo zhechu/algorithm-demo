@@ -68,30 +68,37 @@ public class Heap {
      * @param len
      */
     public static void buildMaxHeap(int[] arr, int len) {
-        for (int i = (int) Math.floor(len / 2); i >= 0; i--) {
+        // 自最后一个非叶子节点开始堆化（(len - 1) >> 1 不一定是非叶子节点，但也没关系）
+        for (int i = (len - 1) >> 1; i >= 0; i--) {
             heapify(arr, i, len);
         }
     }
 
     /**
-     * 堆调整
+     * 自上往下堆化
      * @param arr
      * @param index
      * @param len
      */
     public static void heapify(int[] arr, int index, int len) {
-        int left = 2 * index + 1;
-        int right = 2 * index + 2;
+        // 左节点指针
+        int left = (index << 1) + 1;
+        // 右节点指针
+        int right = (index << 1) + 2;
+        // 最大节点指针
         int largest = index;
 
+        // 检查左节点是否大于父节点
         if (left < len && arr[left] > arr[largest]) {
             largest = left;
         }
 
+        // 检查右节点是否大于最大节点
         if (right < len && arr[right] > arr[largest]) {
             largest = right;
         }
 
+        // 若最大节点不是父节点，则交换并继续调整
         if (largest != index) {
             swap(arr, index, largest);
             heapify(arr, largest, len);
