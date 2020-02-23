@@ -49,30 +49,27 @@ public class Heap {
             return;
         }
 
+        int len = arr.length;
+
         // 建立大根堆
-        for (int i = 0; i < arr.length; i++) {
-            heapInsert(arr, i);
-        }
+        buildMaxHeap(arr, len);
 
         // 每次数组前后对换，逐步排序
-        int size = arr.length;
-        swap(arr, 0, --size);
-        while (size > 0) {
-            // 大根堆调整
-            heapify(arr, 0, size);
-            swap(arr, 0, --size);
+        for (int i = len - 1; i > 0; i--) {
+            swap(arr, 0, i);
+            len--;
+            heapify(arr, 0, len);
         }
     }
 
     /**
-     * 堆插入元素
+     * 建立大根堆
      * @param arr
-     * @param index
+     * @param len
      */
-    public static void heapInsert(int[] arr, int index) {
-        while (arr[index] > arr[(index - 1) / 2]) {
-            swap(arr, index, (index - 1) / 2);
-            index = (index - 1) / 2;
+    public static void buildMaxHeap(int[] arr, int len) {
+        for (int i = (int) Math.floor(len / 2); i >= 0; i--) {
+            heapify(arr, i, len);
         }
     }
 
@@ -80,19 +77,24 @@ public class Heap {
      * 堆调整
      * @param arr
      * @param index
-     * @param size
+     * @param len
      */
-    public static void heapify(int[] arr, int index, int size) {
-        int left = index * 2 + 1;
-        while (left < size) {
-            int largest = left + 1 < size && arr[left + 1] > arr[left] ? left + 1 : left;
-            largest = arr[largest] > arr[index] ? largest : index;
-            if (largest == index) {
-                break;
-            }
-            swap(arr, largest, index);
-            index = largest;
-            left = index * 2 + 1;
+    public static void heapify(int[] arr, int index, int len) {
+        int left = 2 * index + 1;
+        int right = 2 * index + 2;
+        int largest = index;
+
+        if (left < len && arr[left] > arr[largest]) {
+            largest = left;
+        }
+
+        if (right < len && arr[right] > arr[largest]) {
+            largest = right;
+        }
+
+        if (largest != index) {
+            swap(arr, index, largest);
+            heapify(arr, largest, len);
         }
     }
 
