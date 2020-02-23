@@ -69,8 +69,8 @@ public class Heap {
      * @param len
      */
     public static void buildMaxHeap(int[] arr, int len) {
-        // 自最后一个非叶子节点开始堆化（(len - 1) >> 1 不一定是非叶子节点，但也没关系）
-        for (int i = (len - 1) >> 1; i >= 0; i--) {
+        // 自最后一个非叶子节点开始堆化
+        for (int i = (len - 2) >> 1; i >= 0; i--) {
             heapify(arr, i, len);
         }
     }
