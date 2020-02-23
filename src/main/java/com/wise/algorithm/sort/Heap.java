@@ -54,9 +54,10 @@ public class Heap {
         // 建立大根堆
         buildMaxHeap(arr, len);
 
-        // 每次数组前后对换，逐步排序
+        // 最后一个元素与堆顶交换，并堆化，直到堆中只剩一个元素（i == 0）
         for (int i = len - 1; i > 0; i--) {
             swap(arr, 0, i);
+            // 堆元素-1
             len--;
             heapify(arr, 0, len);
         }
