@@ -6,44 +6,75 @@ package com.wise.algorithm.sort;
  * @author lingyuwang
  * @date 2019-07-13 10:59
  */
-public class FastPracticeDemo {
+public class QuickHollandFlag {
 
     public static void main(String[] args) {
-        // 荷兰国旗问题
+        // 生成数组
         int[] test = generateArray();
 
         printArray(test);
+        // num 必须在数组中
         int[] res = partition(test, 0, test.length - 1, 1);
         printArray(test);
+
         // 返回等于区域的索引区间
         System.out.println(res[0]);
         System.out.println(res[1]);
     }
 
-    public static int[] partition(int[] arr, int l, int r, int num) {
-        int less = l - 1;
-        int more = r + 1;
-        int current = l;
-        while (current < more) {
+    /**
+     * 分区
+     * @param arr
+     * @param left
+     * @param right
+     * @param num
+     * @return
+     */
+    public static int[] partition(int[] arr, int left, int right, int num) {
+        // 分区左指针
+        int pLeft = left - 1;
+        // 分区右指针
+        int pRight = right + 1;
+        // 当前指针
+        int current = left;
+        while (current < pRight) {
+            // num 应进入左分区（小于num）
             if (arr[current] < num) {
-                swap(arr, ++less, current++);
-            } else if (arr[current] > num) {
-                swap(arr, --more, current);
+                pLeft++;
+                swap(arr, pLeft, current);
+                current++;
+            }
+            // num 应进入右分区（大于num）
+            else if (arr[current] > num) {
+                pRight--;
+                swap(arr, pRight, current);
             } else {
                 current++;
             }
         }
-        return new int[] { less + 1, more - 1 };
+        return new int[] { pLeft + 1, pRight - 1 };
     }
 
-    // for test
+    /**
+     * 两数交换
+     * @param arr
+     * @param i
+     * @param j
+     */
     public static void swap(int[] arr, int i, int j) {
-        int tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
+        if (i == j) {
+            return;
+        }
+
+        arr[i] = arr[i] ^ arr[j];
+        arr[j] = arr[i] ^ arr[j];
+        arr[i] = arr[i] ^ arr[j];
     }
 
-    // for test
+    /**
+     * 生成数组
+     * @return
+     */
     public static int[] generateArray() {
         int[] arr = new int[10];
         for (int i = 0; i < arr.length; i++) {
@@ -52,7 +83,10 @@ public class FastPracticeDemo {
         return arr;
     }
 
-    // for test
+    /**
+     * 数组打印
+     * @param arr
+     */
     public static void printArray(int[] arr) {
         if (arr == null) {
             return;
