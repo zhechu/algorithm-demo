@@ -19,7 +19,8 @@ public class Merge {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
             int[] arr2 = copyArray(arr1);
             mergeSort(arr1);
-            comparator(arr2);
+            Arrays.sort(arr2);
+            // 检查经冒泡排序的数组是否已有序，若有序，则检查成功
             if (!isEqual(arr1, arr2)) {
                 succeed = false;
                 printArray(arr1);
@@ -31,11 +32,20 @@ public class Merge {
 
         // 归并排序
         int[] arr = generateRandomArray(maxSize, maxValue);
+        // 排序前
         printArray(arr);
+
+        // 开始排序
         mergeSort(arr);
+
+        // 排序后
         printArray(arr);
     }
 
+    /**
+     * 归并排序主入口
+     * @param arr
+     */
     public static void mergeSort(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
@@ -43,41 +53,71 @@ public class Merge {
         mergeSort(arr, 0, arr.length - 1);
     }
 
-    public static void mergeSort(int[] arr, int l, int r) {
-        if (l == r) {
+    /**
+     * 归并排序算法骨架方法，用于递归
+     * @param arr
+     * @param left
+     * @param right
+     */
+    public static void mergeSort(int[] arr, int left, int right) {
+        // 序列中只有一个元素，表示默认已排好序，不需处理，直接返回
+        if (left == right) {
             return;
         }
-        int mid = l + ((r - l) >> 1);
-        mergeSort(arr, l, mid);
-        mergeSort(arr, mid + 1, r);
-        merge(arr, l, mid, r);
+
+        // 使用加减法和位运算以避免乘除法运算，提高效率
+        int mid = left + ((right - left) >> 1);
+        // 左边序列排序
+        mergeSort(arr, left, mid);
+        // 右边序列排序
+        mergeSort(arr, mid + 1, right);
+        // 两序列归并
+        merge(arr, left, mid, right);
     }
 
-    public static void merge(int[] arr, int l, int m, int r) {
-        int[] help = new int[r - l + 1];
+    /**
+     * 合并局部有序的两段序列
+     * @param arr
+     * @param left
+     * @param mid
+     * @param right
+     */
+    public static void merge(int[] arr, int left, int mid, int right) {
+        // 两序列合并后的辅助数组
+        int[] help = new int[right - left + 1];
         int i = 0;
-        int p1 = l;
-        int p2 = m + 1;
-        while (p1 <= m && p2 <= r) {
+        // 左序列当前指针
+        int p1 = left;
+        // 右序列当前指针
+        int p2 = mid + 1;
+
+        while (p1 <= mid && p2 <= right) {
+            // 若左边序列当前指针的值比右序列当前指针的值小，则前者进入辅助数组，反之则反
             help[i++] = arr[p1] < arr[p2] ? arr[p1++] : arr[p2++];
         }
-        while (p1 <= m) {
+
+        // 检查左边序列是否还有元素未进入辅助数组
+        while (p1 <= mid) {
             help[i++] = arr[p1++];
         }
-        while (p2 <= r) {
+
+        // 检查右边序列是否还有元素未进入辅助数组
+        while (p2 <= right) {
             help[i++] = arr[p2++];
         }
+
+        // 将辅助数组整理到原数组
         for (i = 0; i < help.length; i++) {
-            arr[l + i] = help[i];
+            arr[left + i] = help[i];
         }
     }
 
-    // for test
-    public static void comparator(int[] arr) {
-        Arrays.sort(arr);
-    }
-
-    // for test
+    /**
+     * 随机生成数组
+     * @param maxSize
+     * @param maxValue
+     * @return
+     */
     public static int[] generateRandomArray(int maxSize, int maxValue) {
         int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
         for (int i = 0; i < arr.length; i++) {
@@ -86,7 +126,11 @@ public class Merge {
         return arr;
     }
 
-    // for test
+    /**
+     * 拷贝数组
+     * @param arr
+     * @return
+     */
     public static int[] copyArray(int[] arr) {
         if (arr == null) {
             return null;
@@ -98,7 +142,12 @@ public class Merge {
         return res;
     }
 
-    // for test
+    /**
+     * 两数组比较
+     * @param arr1
+     * @param arr2
+     * @return
+     */
     public static boolean isEqual(int[] arr1, int[] arr2) {
         if ((arr1 == null && arr2 != null) || (arr1 != null && arr2 == null)) {
             return false;
@@ -117,7 +166,10 @@ public class Merge {
         return true;
     }
 
-    // for test
+    /**
+     * 数组打印
+     * @param arr
+     */
     public static void printArray(int[] arr) {
         if (arr == null) {
             return;
