@@ -1,20 +1,36 @@
-package com.wise.algorithm.queue;
+package com.wise.algorithm.list;
+
+import java.util.Stack;
 
 /**
- * 判断链表是否为回文链表（会改变原结构，时间复杂度O(n)，空间复杂度O(1)）
+ * 判断链表是否为回文链表（不会改变原结构，时间复杂度O(n)，空间复杂度O(n)）
  *
- * 1.将前半部分翻转并找到中点
- * 2.分两指针以中间节点为中心分别向前和向后移动
+ * 1.前半部分缓存在栈中
+ * 2.分两指针以中间节点为中心分别向前（栈）和向后（原链表）移动
  * 3.依次比较两指针的节点是否相等，若有节点不等，则为非回文链
  */
-public class PalindromeListInPlace {
+public class PalindromeListInCache {
 
     public static void main(String[] args) {
-        System.out.println("是否为回文链表:" + isPalindrome(test1())); // true
-        System.out.println("是否为回文链表:" + isPalindrome(test2())); // true
-        System.out.println("是否为回文链表:" + isPalindrome(test3())); // false
-        System.out.println("是否为回文链表:" + isPalindrome(test4())); // false
-        System.out.println("是否为回文链表:" + isPalindrome(test5())); // false
+        Node head = test1();
+        System.out.println("是否为回文链表:" + isPalindrome(head)); // true
+        printList(head);
+
+        head = test2();
+        System.out.println("是否为回文链表:" + isPalindrome(head)); // true
+        printList(head);
+
+        head = test3();
+        System.out.println("是否为回文链表:" + isPalindrome(head)); // false
+        printList(head);
+
+        head = test4();
+        System.out.println("是否为回文链表:" + isPalindrome(head)); // false
+        printList(head);
+
+        head = test5();
+        System.out.println("是否为回文链表:" + isPalindrome(head)); // false
+        printList(head);
     }
 
     public static boolean isPalindrome(Node head) {
@@ -25,47 +41,45 @@ public class PalindromeListInPlace {
             return head.data == head.next.data;
         }
 
-        // pre 前一个节点
-        Node prepre = null;
-        // 慢指针前一个节点
-        Node pre = head;
+        // 栈，用于存储队列前半部分节点
+        Stack<Node> stack = new Stack<>();
+        stack.push(head);
+
         // 慢指针
-        Node slow = pre.next;
+        Node slow = head.next;
         // 快指针
-        Node fast = pre.next.next;
-        // 慢指针前一个节点翻转
-        pre.next = prepre;
+        Node fast = head.next.next;
 
         // 找到中间节点
         while (fast.next != null && fast.next.next != null) {
-            prepre = pre;
-            pre = slow;
+            stack.push(slow);
             slow = slow.next;
             fast = fast.next.next;
-            pre.next = prepre;
         }
 
         // 链表总节点数为偶数
         if (fast.next != null) {
             // 后半部分头指针
             fast = slow.next;
-            // 前半部分头指针，需做最后一个翻转（此时原半部分队列已翻转）
-            slow.next = pre;
+            // 前半部分头指针为当前 slow 指针
         }
         // 链表总节点数为奇数
         else {
             // 后半部分头指针
             fast = slow.next;
             // 前半部分头指针（此时原半部分队列已翻转）
-            slow = pre;
+            slow = stack.pop();
         }
 
         // 头尾两部分节点依次比较
-        while (slow != null) {
+        while (true) {
             if (slow.data != fast.data) {
                 return false;
             }
-            slow = slow.next;
+            if (stack.empty()) {
+                break;
+            }
+            slow = stack.pop();
             fast = fast.next;
         }
 
@@ -184,6 +198,15 @@ public class PalindromeListInPlace {
         node1.setNext(node2);
 
         return node1;
+    }
+
+    public static void printList(Node head) {
+        System.out.println("=============================================");
+        while (head != null) {
+            System.out.println(head);
+            head = head.next;
+        }
+        System.out.println("=============================================");
     }
 
 }
