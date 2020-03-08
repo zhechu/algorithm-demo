@@ -60,9 +60,6 @@ public class Counting {
 
         // 申请一个计数数组，下标大小[0, max]
         int[] countArr = new int[max + 1];
-        for (int i = 0; i <= max; ++i) {
-            countArr[i] = 0;
-        }
 
         // 计算每个元素的个数，放入计数数组中
         for (int i = 0; i < len; ++i) {
@@ -71,7 +68,7 @@ public class Counting {
 
         // 求小于或等于自身的元素个数并记录到对应的索引位置
         for (int i = 1; i <= max; ++i) {
-            countArr[i] = countArr[i-1] + countArr[i];
+            countArr[i] = countArr[i - 1] + countArr[i];
         }
 
         int[] result = new int[len];
