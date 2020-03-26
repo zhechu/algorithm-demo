@@ -16,11 +16,11 @@ public class PriorityQueueTopK<T> {
         List<Integer> originList = Stream.generate(Math::random)
                 .map(d -> d * upLimit)
                 .map(d -> (int) Math.round(d))
-                .limit(100000000)
+                .limit(10000000)
                 .collect(Collectors.toList());
 
         // 将 (o1, o2) -> (o1 - o2) 换成 (o1, o2) -> (o2 - o1) 可以求解 top K 小
-        PriorityQueueTopK<Integer> priorityQueueTopK = new PriorityQueueTopK<>(10, (o1, o2) -> (o1 - o2));
+        PriorityQueueTopK<Integer> priorityQueueTopK = new PriorityQueueTopK<>(10, (o1, o2) -> (o2 - o1));
 
         long startTime = System.currentTimeMillis();
 
@@ -31,6 +31,7 @@ public class PriorityQueueTopK<T> {
 //        System.out.println("origin: " + originList);
         System.out.println("results: " + results);
         System.out.println("cost: " + (endTime - startTime));
+        // 811 768 826
     }
 
     /** 堆的边界，Top K 问题中的 K */
@@ -62,9 +63,6 @@ public class PriorityQueueTopK<T> {
         while (!boundaryHeap.isEmpty()) {
             result.add(boundaryHeap.poll());
         }
-
-        // 排序反转
-        Collections.reverse(result);
 
         return result;
     }
