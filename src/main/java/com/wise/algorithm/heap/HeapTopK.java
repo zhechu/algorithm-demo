@@ -21,7 +21,7 @@ public class HeapTopK<E> {
         List<Integer> originList = Stream.generate(Math::random)
                 .map(d -> d * upLimit)
                 .map(d -> (int) Math.round(d))
-                .limit(10000000)
+                .limit(100000000)
                 .collect(Collectors.toList());
 
         // 将 (o1, o2) -> (o1 - o2) 换成 (o1, o2) -> (o2 - o1) 可以求解 top K 小
@@ -36,7 +36,8 @@ public class HeapTopK<E> {
 //        System.out.println("origin: " + originList);
         System.out.println("results: " + results);
         System.out.println("cost: " + (endTime - startTime));
-        // 108 101 113
+        // 1207 1158 1136
+        // average: 1167
     }
 
     /**
@@ -96,9 +97,9 @@ public class HeapTopK<E> {
     transient Object[] queue;
 
     /** 比较器 */
-    private final Comparator<? super E> comparator;
+    private final Comparator<E> comparator;
 
-    public HeapTopK(int boundary, Comparator<? super E> comparator) {
+    public HeapTopK(int boundary, Comparator<E> comparator) {
         this.boundary = boundary;
         this.queue = new Object[boundary];
         this.comparator = comparator;
@@ -106,22 +107,24 @@ public class HeapTopK<E> {
 
     /**
      * 求解数据流中的 top K
-     * @param c 原始数据
+     * @param originList 原始数据
      * @return top K 结果
      */
-    public List<E> getTopK(Collection<? extends E> c) {
-        Object[] array = c.toArray();
+    public List<E> getTopK(List<E> originList) {
+        int size = originList.size();
+        if (size <= boundary) {
+            return originList;
+        }
 
         for (int i = 0; i < boundary; i++) {
-            queue[i] = array[i];
+            queue[i] = originList.get(i);
         }
 
         // 堆化
         buildHeap(queue);
 
-        int length = array.length;
-        for (int j = boundary; j < length; j++) {
-            add(array[j]);
+        for (int j = boundary; j < size; j++) {
+            add(originList.get(j));
         }
 
         List<E> result = new ArrayList<>(boundary);
@@ -185,7 +188,7 @@ public class HeapTopK<E> {
     }
 
     /**
-     * 建立小根堆
+     * 建立堆
      * @param array
      */
     private void buildHeap(Object[] array) {
