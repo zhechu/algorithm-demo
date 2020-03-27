@@ -36,8 +36,8 @@ public class HeapTopK<E> {
 //        System.out.println("origin: " + originList);
         System.out.println("results: " + results);
         System.out.println("cost: " + (endTime - startTime));
-        // 1207 1158 1136
-        // average: 1167
+        // 747 483 603 629 565
+        // average: 605
     }
 
     /**

@@ -34,8 +34,8 @@ public class PriorityQueueTopK<T> {
 //        System.out.println("origin: " + originList);
         System.out.println("results: " + results);
         System.out.println("cost: " + (endTime - startTime));
-        // 1537 1182 1212
-        // average: 1310
+        // 510 655 518 513 667
+        // average: 572
     }
 
     /**
@@ -152,8 +152,8 @@ public class PriorityQueueTopK<T> {
      */
     private void add(T t) {
         if (comparator.compare(t, boundaryHeap.peek()) > 0) {
-            boundaryHeap.add(t);
             boundaryHeap.poll();
+            boundaryHeap.add(t);
         }
     }
 
