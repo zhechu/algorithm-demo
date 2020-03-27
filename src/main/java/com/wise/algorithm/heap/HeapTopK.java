@@ -146,29 +146,34 @@ public class HeapTopK<E> {
      * @param length
      */
     private void heapify(Object[] array, int index, int length) {
-        // 左节点指针
-        int left = (index << 1) + 1;
-        // 右节点指针
-        int right = (index << 1) + 2;
-        // 最小节点指针
-        int least = index;
+        do {
+            // 左节点指针
+            int left = (index << 1) + 1;
+            // 右节点指针
+            int right = (index << 1) + 2;
+            // 最小节点指针
+            int least = index;
 
-        // 检查左节点
-        if (left < length && comparator.compare((E) array[left], (E) array[least]) < 0) {
-            least = left;
-        }
+            // 检查左节点
+            if (left < length && comparator.compare((E) array[left], (E) array[least]) < 0) {
+                least = left;
+            }
 
-        // 检查右节点
-        if (right < length && comparator.compare((E) array[right], (E) array[least]) < 0) {
-            least = right;
-        }
+            // 检查右节点
+            if (right < length && comparator.compare((E) array[right], (E) array[least]) < 0) {
+                least = right;
+            }
 
-        // 若最小节点不是父节点，则交换并继续调整
-        if (index != least) {
-            swap(array, least, index);
-            // 继续向下调整
-            heapify(array, least, length);
-        }
+            // 若最小节点不是父节点，则交换并继续调整
+            if (index != least) {
+                swap(array, least, index);
+
+                // 继续向下调整
+                index = least;
+            } else {
+                break;
+            }
+        } while (true);
     }
 
     /**
