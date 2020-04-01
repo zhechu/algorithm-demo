@@ -53,7 +53,6 @@ public class GraphOfAdjacency {
         // 无向图一条边存两次
         adj[s].add(t);
         adj[t].add(s);
-
     }
 
     /**
@@ -82,17 +81,18 @@ public class GraphOfAdjacency {
 
         while (queue.size() != 0) {
             int w = queue.poll();
-            for (int i = 0; i < adj[w].size(); ++i) {
-                int q = adj[w].get(i);
-                if (!visited[q]) {
-                    prev[q] = w;
-                    if (q == t) {
-                        print(prev, s, t);
-                        return;
-                    }
-                    visited[q] = true;
-                    queue.add(q);
+            for (int q : adj[w]) {
+                if (visited[q]) {
+                    continue;
                 }
+
+                prev[q] = w;
+                if (q == t) {
+                    print(prev, s, t);
+                    return;
+                }
+                visited[q] = true;
+                queue.add(q);
             }
         }
     }
@@ -147,8 +147,7 @@ public class GraphOfAdjacency {
             return;
         }
 
-        for (int i = 0; i < adj[w].size(); ++i) {
-            int q = adj[w].get(i);
+        for (int q : adj[w]) {
             if (!visited[q]) {
                 prev[q] = w;
                 recurDfs(q, t, visited, prev);
