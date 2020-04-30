@@ -1,4 +1,4 @@
-package com.wise.algorithm.tree;
+package com.wise.algorithm.strmatch;
 
 public class Trie {
 
