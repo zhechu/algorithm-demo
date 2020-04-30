@@ -15,6 +15,11 @@ public class Kmp {
         int result = kmp(a.toCharArray(), b.toCharArray());
         System.out.println(result);
         // 6
+
+        // 等价于
+        result = a.indexOf(b);
+        System.out.println(result);
+        // 6
     }
 
     /**
@@ -58,19 +63,32 @@ public class Kmp {
      */
     private static int[] getNexts(char[] b, int m) {
         int[] next = new int[m];
+
+        // 一个字符是不存在前缀和后缀的
         next[0] = -1;
+
+        // k 表示 next 的值
         int k = -1;
+
+        // 计算 next 值
         for (int i = 1; i < m; ++i) {
+            // 此时的 k 表示上一个 next 的值
+
+            // 若上一个 next 的值存在，则再检查是否有复用的可能
             while (k != -1 && b[k + 1] != b[i]) {
+                // 取上一个 next 的值作为此次 next 的参考值
                 k = next[k];
             }
 
+            // 指针新字符检查是否匹配
             if (b[k + 1] == b[i]) {
                 ++k;
             }
 
+            // 最终得到 next 的值
             next[i] = k;
         }
+
         return next;
     }
 
