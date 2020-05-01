@@ -23,9 +23,9 @@ public class Kmp {
     }
 
     /**
-     * a, b分别是主串和模式串
-     * @param a
-     * @param b
+     * KMP 算法
+     * @param a 主串
+     * @param b 模式串
      * @return
      */
     public static int kmp(char[] a, char[] b) {
