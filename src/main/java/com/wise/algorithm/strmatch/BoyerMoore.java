@@ -60,11 +60,12 @@ public class BoyerMoore {
                 return i;
             }
 
+            // 通过坏字符计算移动长度
             int x = j - bc[a[i + j]];
-            int y = 0;
 
-            // 若存在好后缀
-            if (j < m-1) {
+            // 通过好后缀计算移动长度
+            int y = 0;
+            if (j < m - 1) {
                 y = moveByGS(j, m, suffix, prefix);
             }
 
@@ -135,7 +136,7 @@ public class BoyerMoore {
     }
 
     /**
-     * 计算移动长度
+     * 通过好后缀计算移动长度
      * @param j 坏字符对应的模式串中的字符下标
      * @param m 模式串长度
      * @param suffix
