@@ -2,6 +2,9 @@ package com.wise.algorithm.apply;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * 统计数组的正/逆序对个数
+ */
 public class OrderPair {
 
     public static void main(String[] args) {
