@@ -34,7 +34,10 @@ public class KnapsackProbByRecall {
         // 临时解
         int[] tempAnswer = new int[len];
 
-        cal(resultDTO, tempAnswer, 0,0, items, len, weight);
+        // 备忘录
+        boolean[][] mem = new boolean[len][weight];
+
+        cal(resultDTO, tempAnswer, mem, 0,0, items, len, weight);
 
         return resultDTO;
     }
@@ -48,7 +51,7 @@ public class KnapsackProbByRecall {
      * @param n 物品个数
      * @param w 背包重量
      */
-    public static void cal(ResultDTO resultDTO, int[] tempAnswer, int i, int cw, int[] items, int n, int w) {
+    public static void cal(ResultDTO resultDTO, int[] tempAnswer, boolean[][] mem, int i, int cw, int[] items, int n, int w) {
         // cw==w 表示装满了; i==n 表示已经考察完所有的物品
         if (cw == w || i == n) {
             // 打印当前方案
@@ -64,14 +67,21 @@ public class KnapsackProbByRecall {
             return;
         }
 
+        // 重复状态
+        if (mem[i][cw]) {
+            return;
+        }
+        // 记录(i, cw)这个状态
+        mem[i][cw] = true;
+
         // 回溯（回溯法的关键步骤，先调用，后计算）
-        cal(resultDTO, tempAnswer, i + 1, cw, items, n, w);
+        cal(resultDTO, tempAnswer, mem, i + 1, cw, items, n, w);
 
         // 未超过背包可以承受的重量才继续装
         if (cw + items[i] <= w) {
             // 装入背包的物品设置为 1
             tempAnswer[i] = 1;
-            cal(resultDTO, tempAnswer, i + 1,cw + items[i], items, n, w);
+            cal(resultDTO, tempAnswer, mem, i + 1,cw + items[i], items, n, w);
         }
 
         // 清除已有状态，重新回到未设置状态
