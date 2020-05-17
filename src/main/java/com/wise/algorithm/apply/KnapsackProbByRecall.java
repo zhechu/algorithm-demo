@@ -98,27 +98,27 @@ public class KnapsackProbByRecall {
         System.out.println(" 价值为" + bestPrice);
     }
 
-}
+    /**
+     * 结果
+     */
+    static class ResultDTO {
+        /** 存储背包中物品总重量的最大值 */
+        public int maxW = Integer.MIN_VALUE;
 
-/**
- * 结果
- */
-class ResultDTO {
-    /** 存储背包中物品总重量的最大值 */
-    public int maxW = Integer.MIN_VALUE;
+        /** 最优解 */
+        public int[] bestAnswer;
 
-    /** 最优解 */
-    public int[] bestAnswer;
+        public ResultDTO(int length) {
+            this.bestAnswer = new int[length];
+        }
 
-    public ResultDTO(int length) {
-        this.bestAnswer = new int[length];
+        @Override
+        public String toString() {
+            return "ResultDTO{" +
+                    "maxW=" + maxW +
+                    ", bestAnswer=" + Arrays.toString(bestAnswer) +
+                    '}';
+        }
     }
 
-    @Override
-    public String toString() {
-        return "ResultDTO{" +
-                "maxW=" + maxW +
-                ", bestAnswer=" + Arrays.toString(bestAnswer) +
-                '}';
-    }
 }
