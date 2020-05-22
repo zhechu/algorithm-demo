@@ -1,7 +1,5 @@
 package com.wise.algorithm.apply;
 
-import java.util.Arrays;
-
 /**
  * 求解0-1背包问题（动态规划）
  *
