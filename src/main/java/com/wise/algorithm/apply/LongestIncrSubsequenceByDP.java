@@ -20,11 +20,14 @@ public class LongestIncrSubsequenceByDP {
         int len = sequence.length;
         int[] mem = new int[len];
 
+        // 回溯加备忘录
         for (int i = 0; i < len; i++) {
-            rdp(i, i, sequence, mem);
+            for (int j = i; j >= 0; j--) {
+                rdp(i, j, sequence, mem);
+            }
         }
 
-        // 获取最长递增子序列
+        // 获取最长递增子序列（不包含本身节点）
         int index = 0;
         for (int i = 1; i < len; i++) {
             if (mem[i] > mem[index]) {
@@ -32,7 +35,22 @@ public class LongestIncrSubsequenceByDP {
             }
         }
 
-        System.out.println("最长递增子序列长度：" + mem[index]);
+        System.out.println("最长递增子序列长度：" + (mem[index] + 1));
+
+        // 推断最长子序列
+        LinkedList<Integer> longestSubsequenceList = new LinkedList<>();
+        longestSubsequenceList.addFirst(sequence[index]);
+        int tempSequence = sequence[index];
+        int tempLen = mem[index] - 1;
+        for (int k = index - 1; k >=0; k--) {
+            if (sequence[k] <= tempSequence && mem[k] == tempLen) {
+                tempSequence = sequence[k];
+                tempLen = mem[k] - 1;
+                longestSubsequenceList.addFirst(sequence[k]);
+            }
+        }
+
+        System.out.println("最长递增子序列：" + longestSubsequenceList);
     }
 
     public static int rdp(int t, int i, int[] sequence, int[] mem) {
@@ -41,7 +59,7 @@ public class LongestIncrSubsequenceByDP {
         }
 
         int result;
-        if (sequence[t] >= sequence[i - 1]) {
+        if (sequence[i - 1] <= sequence[t]) {
             if (mem[i - 1] > 0) {
                 result = mem[i - 1] + 1;
             } else {
@@ -50,28 +68,13 @@ public class LongestIncrSubsequenceByDP {
         } else {
             result = rdp(t,i - 1, sequence, mem);
         }
-        mem[t] = result;
+
+        // 记录最长序列长度
+        if (result > mem[t]) {
+            mem[t] = result;
+        }
 
         return result;
-    }
-
-    /**
-     * 结果
-     */
-    static class ResultDTO {
-        /** 最长子序列长度 */
-        public int longestLength = Integer.MIN_VALUE;
-
-        /** 最优解序列 */
-        public LinkedList<Point> longestSubsequenceList = new LinkedList<>();
-
-        @Override
-        public String toString() {
-            return "ResultDTO{" +
-                    "longestLength=" + longestLength +
-                    ", longestSubsequenceList=" + longestSubsequenceList +
-                    '}';
-        }
     }
 
 }
