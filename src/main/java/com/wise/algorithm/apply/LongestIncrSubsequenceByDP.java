@@ -3,6 +3,7 @@ package com.wise.algorithm.apply;
 import java.util.LinkedList;
 
 /**
+ * 动态规划求最长递增子序列
  *
  * @author lingyuwang
  * @date 2020-05-30 19:28
@@ -13,10 +14,18 @@ public class LongestIncrSubsequenceByDP {
     public static void main(String[] args) {
         int[] sequence = {2, 9, 3, 6, 5, 1, 7};
 
-        dp(sequence);
+        LinkedList<Integer> longestSubsequenceList = dp(sequence);
+
+        System.out.println("最长递增子序列长度：" + longestSubsequenceList.size());
+        System.out.println("最长递增子序列：" + longestSubsequenceList);
     }
 
-    public static void dp(int[] sequence) {
+    /**
+     * 状态转移方程法
+     * @param sequence 原序列
+     * @return 最长递增子序列
+     */
+    public static LinkedList<Integer> dp(int[] sequence) {
         int len = sequence.length;
         int[] mem = new int[len];
 
@@ -27,15 +36,13 @@ public class LongestIncrSubsequenceByDP {
             }
         }
 
-        // 获取最长递增子序列（不包含本身节点）
+        // 获取最长递增子序列备忘录索引（不包含本身节点）
         int index = 0;
         for (int i = 1; i < len; i++) {
             if (mem[i] > mem[index]) {
                 index = i;
             }
         }
-
-        System.out.println("最长递增子序列长度：" + (mem[index] + 1));
 
         // 推断最长子序列
         LinkedList<Integer> longestSubsequenceList = new LinkedList<>();
@@ -50,9 +57,17 @@ public class LongestIncrSubsequenceByDP {
             }
         }
 
-        System.out.println("最长递增子序列：" + longestSubsequenceList);
+        return longestSubsequenceList;
     }
 
+    /**
+     * 递归调用
+     * @param t 目标索引
+     * @param i 回溯索引
+     * @param sequence 原序列
+     * @param mem 备忘录
+     * @return 以 t 为参照节点，返回 0 到 i 的递增子序列的长度
+     */
     public static int rdp(int t, int i, int[] sequence, int[] mem) {
         if (i == 0) {
             return 0;
