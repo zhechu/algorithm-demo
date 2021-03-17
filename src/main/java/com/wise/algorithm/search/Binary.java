@@ -8,9 +8,11 @@ package com.wise.algorithm.search;
 public class Binary {
 
     public static void main(String[] args) {
-        int[] arr = {1, 2, 2, 3, 3, 4, 5, 6};
+//        int[] arr = {1, 2, 2, 3, 3, 4, 5, 6};
+        int[] arr = {1, 2, 3, 4, 6, 6, 6, 7, 8, 9, 0};
 
-        int target = 3;
+//        int target = 3;
+        int target = 6;
         int targetIndex = searchFirst(arr, target);
         System.out.println("第一个值等于给定值的索引：" + targetIndex);
         // 2

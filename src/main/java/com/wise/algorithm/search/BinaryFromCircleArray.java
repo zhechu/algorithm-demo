@@ -49,11 +49,14 @@ public class BinaryFromCircleArray {
                 if (arr[low] == value) {
                     return low;
                 }
+                // 目标点在 low 和 mid 范围
                 if (arr[low] < value && value < arr[mid]) {
                     high = mid - 1;
                     // low 已被检查过，不需再次检查
                     low++;
-                } else {
+                }
+                // 目标点在右边
+                else {
                     low = mid + 1;
                 }
             }
@@ -62,11 +65,14 @@ public class BinaryFromCircleArray {
                 if (arr[high] == value) {
                     return high;
                 }
+                // 目标点在 mid 和 high 范围
                 if (arr[mid] < value && value < arr[high]) {
                     low = mid + 1;
                     // hight 已被检查过，不需再次检查
                     high--;
-                } else {
+                }
+                // 目标点在左边
+                else {
                     high = mid - 1;
                 }
             }
